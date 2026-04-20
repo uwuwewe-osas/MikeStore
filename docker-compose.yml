@@ -1,0 +1,60 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mikezapatillas_app
+    ports:
+      - "4000:80"
+    environment:
+      APP_NAME: "MikeZapatillas POS"
+      APP_ENV: "local"
+      DB_HOST: "db"
+      DB_PORT: "3306"
+      DB_DATABASE: "mikezapatillas_pos"
+      DB_USERNAME: "pos_user"
+      DB_PASSWORD: "pos_secret"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./:/var/www/html
+
+  phpmyadmin:
+    image: phpmyadmin:5-apache
+    container_name: mikezapatillas_phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "4001:80"
+
+  db:
+    image: mysql:8.4
+    container_name: mikezapatillas_db
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mikezapatillas_pos
+      MYSQL_USER: pos_user
+      MYSQL_PASSWORD: pos_secret
+    ports:
+      - "4002:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql_data:

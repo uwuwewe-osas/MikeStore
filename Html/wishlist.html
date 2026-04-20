@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mike Store - Favoritos</title>
+    <link rel="stylesheet" href="../Css/styles.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Mike Store</a>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar zapatillas..." autocomplete="off">
+                <button class="search-btn">🔍</button>
+                <div id="search-results" class="search-results"></div>
+            </div>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Menú">
+                <span></span><span></span><span></span>
+            </button>
+            <ul id="nav-menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="hombres.html">Hombres</a></li>
+                <li><a href="mujeres.html">Mujeres</a></li>
+                <li><a href="niños.html">Niños</a></li>
+                <li><a href="wishlist.html" class="nav-icon active-link">❤️</a></li>
+                <li><a href="#" class="carrito nav-icon">🛒 <span class="carrito-badge">0</span></a></li>
+                <li><a href="perfil.html" class="nav-icon">👤</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="wishlist-container">
+            <h1>Mis Favoritos ❤️</h1>
+            <section class="productos" id="wishlist-grid"></section>
+        </div>
+    </main>
+
+    <div id="modal-carrito" class="modal">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h2>Tu Carrito</h2><span class="cerrar">&times;</span>
+            </div>
+            <div id="items-carrito"></div>
+            <div class="carrito-footer">
+                <div class="total"><span>Total:</span><span id="total-carrito" class="total-precio">S/. 0.00</span>
+                </div>
+                <a href="checkout.html" class="btn-checkout">Proceder al Pago</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Mike Store</h4>
+                <p>Tu tienda de zapatillas favorita.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Enlaces</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="hombres.html">Hombres</a></li>
+                    <li><a href="mujeres.html">Mujeres</a></li>
+                    <li><a href="niños.html">Niños</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contacto</h4>
+                <p>📧 mike.store@gmail.com</p>
+                <p>📞 987 654 321</p>
+            </div>
+            <div class="footer-section">
+                <h4>Síguenos</h4>
+                <div class="footer-social"><a href="https://facebook.com" target="_blank">Facebook</a><a
+                        href="https://instagram.com" target="_blank">Instagram</a><a href="https://twitter.com"
+                        target="_blank">Twitter</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Mike Store. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="../Scripts/productos-data.js"></script>
+    <script src="../Scripts/shared.js"></script>
+    <script>
+        function cargarWishlist() {
+            const container = document.getElementById('wishlist-grid');
+            const productosWish = PRODUCTOS.filter(p => wishlist.includes(p.id));
+
+            if (productosWish.length === 0) {
+                container.innerHTML = `
+                    <div class="wishlist-empty" style="grid-column:1/-1;">
+                        <span>💔</span>
+                        <p>Aún no tienes productos favoritos</p>
+                        <a href="index.html" class="btn-seguir-comprando" style="display:inline-block;margin-top:16px;">Explorar Productos</a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = productosWish.map(p => {
+                const promedio = p.resenas.length > 0 ? (p.resenas.reduce((s, r) => s + r.puntuacion, 0) / p.resenas.length) : 0;
+                return `
+                <div class="producto">
+                    <button class="btn-wishlist active" data-id="${p.id}" onclick="event.stopPropagation(); toggleWishlist(${p.id}); setTimeout(() => cargarWishlist(), 100)">❤️</button>
+                    <a href="producto.html?id=${p.id}" class="producto-link">
+                        <img src="${p.imagen}" alt="${p.nombre}" loading="lazy">
+                    </a>
+                    <div class="producto-info">
+                        <span class="producto-marca">${p.marca}</span>
+                        <h3><a href="producto.html?id=${p.id}">${p.nombre}</a></h3>
+                        <div class="producto-rating">
+                            ${renderEstrellas(promedio)}
+                            <span class="rating-count">(${p.resenas.length})</span>
+                        </div>
+                        <div class="producto-precios">
+                            ${p.precioOriginal ? `<span class="precio-original">S/. ${p.precioOriginal.toFixed(2)}</span>` : ''}
+                            <span class="precio ${p.enOferta ? 'precio-oferta' : ''}">S/. ${p.precio.toFixed(2)}</span>
+                        </div>
+                        <button class="btn-agregar" onclick="window.location.href='producto.html?id=${p.id}'">Ver Producto</button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', cargarWishlist);
+    </script>
+</body>
+
+</html>

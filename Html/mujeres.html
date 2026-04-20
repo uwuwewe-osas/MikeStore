@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zapatillas para Mujeres - Mike Store. Estilo y comodidad diseñados para ellas.">
+    <title>Mike Store - Zapatillas para Mujeres</title>
+    <link rel="stylesheet" href="../Css/styles.css">
+</head>
+
+<body data-genero="mujeres">
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Mike Store</a>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar zapatillas..." autocomplete="off">
+                <button class="search-btn">🔍</button>
+                <div id="search-results" class="search-results"></div>
+            </div>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Menú">
+                <span></span><span></span><span></span>
+            </button>
+            <ul id="nav-menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="hombres.html">Hombres</a></li>
+                <li><a href="mujeres.html" class="active-link">Mujeres</a></li>
+                <li><a href="niños.html">Niños</a></li>
+                <li><a href="wishlist.html" class="nav-icon" title="Favoritos">❤️</a></li>
+                <li>
+                    <a href="#" class="carrito nav-icon" title="Carrito">
+                        🛒 <span class="carrito-badge">0</span>
+                    </a>
+                </li>
+                <li><a href="perfil.html" class="nav-icon" title="Mi Cuenta">👤</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero_Mujeres">
+            <h1>Zapatillas para Mujeres</h1>
+            <p>Estilo y comodidad diseñados para ellas</p>
+        </section>
+
+        <div class="container">
+            <div class="filters">
+                <h3>Filtros</h3>
+                <div class="filter-section">
+                    <h4>Categoría</h4>
+                    <div class="filter-options">
+                        <div class="filter-item"><input type="checkbox" id="filter-outdoor" name="filter-categoria"
+                                value="Outdoor"><label for="filter-outdoor">Outdoor</label></div>
+                        <div class="filter-item"><input type="checkbox" id="filter-urbano" name="filter-categoria"
+                                value="Urbano"><label for="filter-urbano">Urbano</label></div>
+                        <div class="filter-item"><input type="checkbox" id="filter-correr" name="filter-categoria"
+                                value="Correr"><label for="filter-correr">Correr</label></div>
+                        <div class="filter-item"><input type="checkbox" id="filter-entrenar" name="filter-categoria"
+                                value="Entrenar"><label for="filter-entrenar">Entrenar</label></div>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h4>Precio</h4>
+                    <div class="filter-options">
+                        <div class="filter-item"><input type="number" id="filter-precio-min" placeholder="Mínimo"
+                                step="0.01" min="0"></div>
+                        <div class="filter-item"><input type="number" id="filter-precio-max" placeholder="Máximo"
+                                step="0.01" min="0"></div>
+                    </div>
+                </div>
+                <button class="btn-filter" onclick="renderizarProductos('mujeres')">Aplicar Filtros</button>
+            </div>
+            <div class="products">
+                <button class="btn-toggle-filters"
+                    onclick="document.querySelector('.filters').classList.toggle('visible')">☰ Mostrar Filtros</button>
+                <div class="products-toolbar">
+                    <h2>Zapatillas para Mujeres</h2>
+                    <select id="sort-select">
+                        <option value="">Ordenar por</option>
+                        <option value="precio-asc">Precio: menor a mayor</option>
+                        <option value="precio-desc">Precio: mayor a menor</option>
+                        <option value="nombre">Nombre A-Z</option>
+                        <option value="nuevos">Más nuevos</option>
+                    </select>
+                </div>
+                <section class="productos" id="productos"></section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Mike Store</h4>
+                <p>Tu tienda de zapatillas favorita.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Enlaces</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="hombres.html">Hombres</a></li>
+                    <li><a href="mujeres.html">Mujeres</a></li>
+                    <li><a href="niños.html">Niños</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contacto</h4>
+                <p>📧 mike.store@gmail.com</p>
+                <p>📞 987 654 321</p>
+            </div>
+            <div class="footer-section">
+                <h4>Síguenos</h4>
+                <div class="footer-social"><a href="https://facebook.com" target="_blank">Facebook</a><a
+                        href="https://instagram.com" target="_blank">Instagram</a><a href="https://twitter.com"
+                        target="_blank">Twitter</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Mike Store. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <div id="modal-carrito" class="modal">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h2>Tu Carrito</h2><span class="cerrar">&times;</span>
+            </div>
+            <div id="items-carrito"></div>
+            <div class="carrito-footer">
+                <div class="total"><span>Total:</span><span id="total-carrito" class="total-precio">S/. 0.00</span>
+                </div>
+                <a href="checkout.html" class="btn-checkout">Proceder al Pago</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../Scripts/productos-data.js"></script>
+    <script src="../Scripts/shared.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => { renderizarProductos('mujeres'); });
+    </script>
+</body>
+
+</html>
