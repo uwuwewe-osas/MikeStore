@@ -15,6 +15,7 @@ $saleDetail = $data['saleDetail'];
                         <th>Nro</th>
                         <th>Cliente</th>
                         <th>Cajero</th>
+                        <th>Canal</th>
                         <th>Pago</th>
                         <th>Total</th>
                         <th>Fecha</th>
@@ -30,6 +31,7 @@ $saleDetail = $data['saleDetail'];
                             </td>
                             <td><?= h((string) ($sale['customer_name'] ?: 'Cliente eventual')) ?></td>
                             <td><?= h($sale['user_name']) ?></td>
+                            <td><span class="<?= badge_class($sale['sales_channel']) ?>"><?= h($sale['sales_channel']) ?></span></td>
                             <td><span class="<?= badge_class($sale['payment_method']) ?>"><?= h($sale['payment_method']) ?></span></td>
                             <td><?= h(currency($sale['total'])) ?></td>
                             <td><?= h($sale['created_at']) ?></td>
@@ -48,6 +50,7 @@ $saleDetail = $data['saleDetail'];
             <p><strong><?= h($saleDetail['sale_number']) ?></strong></p>
             <p class="muted">Cliente: <?= h((string) ($saleDetail['customer_name'] ?: 'Cliente eventual')) ?></p>
             <p class="muted">Atendido por: <?= h($saleDetail['user_name']) ?></p>
+            <p class="muted">Canal: <?= h($saleDetail['sales_channel']) ?></p>
             <p class="muted">Pago: <?= h($saleDetail['payment_method']) ?></p>
 
             <div class="table-wrap">

@@ -39,6 +39,22 @@ $summary = $report['summary'];
     </article>
 
     <article class="card">
+        <h2>Ventas por canal</h2>
+        <?php if (!$report['channels']): ?>
+            <div class="empty-state">Aun no hay canales con ventas.</div>
+        <?php else: ?>
+            <ul class="kpi-list">
+                <?php foreach ($report['channels'] as $channel): ?>
+                    <li>
+                        <span><?= h($channel['sales_channel']) ?></span>
+                        <strong><?= h((string) $channel['total_sales']) ?> ventas · <?= h(currency($channel['amount'])) ?></strong>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </article>
+
+    <article class="card">
         <h2>Indicadores incluidos</h2>
         <ul class="kpi-list">
             <li><span>Ticket promedio</span><strong><?= h(currency(($summary['total_sales'] ?? 0) > 0 ? ((float) $summary['total_revenue'] / (int) $summary['total_sales']) : 0)) ?></strong></li>

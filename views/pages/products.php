@@ -28,7 +28,7 @@
                     <select name="gender" required>
                         <option value="hombre">Hombre</option>
                         <option value="mujeres">Mujeres</option>
-                        <option value="niños">Ninos</option>
+                        <option value="ninos">Ninos</option>
                     </select>
                 </div>
                 <div class="field">
@@ -48,6 +48,10 @@
                     <input name="barcode" value="<?= h((string) old('barcode')) ?>">
                 </div>
                 <div class="field">
+                    <label>Slug</label>
+                    <input name="slug" value="<?= h((string) old('slug')) ?>" placeholder="se genera automaticamente si lo dejas vacio">
+                </div>
+                <div class="field">
                     <label>Stock inicial</label>
                     <input name="stock" type="number" min="0" value="<?= h((string) old('stock', '0')) ?>" required>
                 </div>
@@ -63,9 +67,27 @@
                 </div>
             </div>
 
+            <div class="form-grid">
+                <div class="field">
+                    <label>Imagen principal</label>
+                    <input name="image_url" value="<?= h((string) old('image_url')) ?>" placeholder="https://...">
+                </div>
+                <div class="field">
+                    <label>Color acento</label>
+                    <input name="accent_color" value="<?= h((string) old('accent_color', '#0f766e')) ?>">
+                </div>
+            </div>
+
             <div class="field">
                 <label>Descripcion</label>
                 <textarea name="description"><?= h((string) old('description')) ?></textarea>
+            </div>
+
+            <div class="field">
+                <label>
+                    <input type="checkbox" name="featured">
+                    Mostrar como destacado en la tienda online
+                </label>
             </div>
 
             <div class="actions">
@@ -93,7 +115,7 @@
                             <td><?= h($product['sku']) ?></td>
                             <td>
                                 <strong><?= h($product['name']) ?></strong><br>
-                                <span class="muted small"><?= h($product['brand']) ?> · <?= h($product['category']) ?></span>
+                                <span class="muted small"><?= h($product['brand']) ?> · <?= h($product['category']) ?> · <?= h(gender_label($product['gender'])) ?></span>
                             </td>
                             <td><?= h(currency($product['price'])) ?></td>
                             <td><?= h((string) $product['total_stock']) ?> en <?= h((string) $product['variants_count']) ?> tallas</td>
