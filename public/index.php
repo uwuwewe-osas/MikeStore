@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/app/bootstrap.php';
 
-$page = (string) ($_GET['page'] ?? 'dashboard');
+$requestedPage = $_GET['page'] ?? null;
+$page = (string) ($requestedPage ?? 'dashboard');
 $allowedPages = ['login', 'dashboard', 'pos', 'products', 'inventory', 'customers', 'sales', 'cash', 'reports'];
 
 if (!in_array($page, $allowedPages, true)) {
@@ -86,6 +87,10 @@ if (is_post()) {
         flash('error', $exception->getMessage());
         redirect_to('/?page=' . $page);
     }
+}
+
+if ($requestedPage === null && !current_user()) {
+    $page = 'login';
 }
 
 if ($page !== 'login') {
